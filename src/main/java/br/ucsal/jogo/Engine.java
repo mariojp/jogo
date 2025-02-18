@@ -1,36 +1,45 @@
 package br.ucsal.jogo;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+
 public class Engine {
 
 	
-	private Personagem p1;
-	private Personagem p2;
+	private List<Personagem> personagens;
+	//private Personagem p2;
 	
 	
-	public Engine(Personagem p1, Personagem p2) {
-		super();
-		this.p1 = p1;
-		this.p2 = p2;
+	public Engine(List<Personagem> lutadores) {
+		this.personagens = lutadores;
 	}
 	
 	
 	public void batalha() {
 		
-		Personagem ataque = p1;
-		Personagem defesa = p2;
 		Personagem change;
-		while(p1.getVida() > 0 && p2.getVida() > 0) {
-			Integer dano =(ataque.getAtaque() - defesa.getDefesa());
-			defesa.setVida(defesa.getVida() - dano);
-			change = defesa;
-			defesa = ataque;
-			ataque = change;
+		boolean isAlive = true;
+		int ataque = 0;
+		int defesa = 1;
+		while(isAlive) {
+			Personagem a = personagens.get(ataque);
+			Personagem d =personagens.get(defesa);
+			int dano = (a.getAtaque()-d.getDefesa());
+			d.setVida(d.getVida()-dano);
+			isAlive = (d.getVida()>0);
+			ataque = ataque + 1;
+			defesa = defesa + 1;
+			ataque = ataque >= personagens.size()?0:ataque;
+			defesa = defesa >= personagens.size()?0:defesa;
 		}
 		
-		if(p1.getVida() <= 0) {
-			System.out.println("P2  WIN" );
-		}else {
-			System.out.println("P1  WIN" );
+		int i = 1;
+		for (Personagem personagem : personagens) {
+			System.out.println("Personagem "+i+ " "+ (personagem.getVida()>0?"VENCEU":"PERDEU") );
+			i++;
 		}
 		
 	}
